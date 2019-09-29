@@ -1,0 +1,105 @@
+Reporte de variables independientes
+
+Para las variables independientes mis compañeros mandarán datos sobre transporte, urbanización, salud y educación. Siguiendo con los factores que pueden influir en la productividad pasaré a presentar la variable <género>. Esta varaible comprende datos sobre la igualdad de género, haciéndo énfasis en la igualdad laboral. Desde una fase preliminar he conseguido data del FMI sobre sus índices de igauldad de género (aquí hay dos variables: índice de desarrollo de género e índice de desigualda de género) y data del Banco Mundial. Sobre la data del Banco Mundial, he accedido al DataBank de los Indicadores de Desarrollo; aquí he escogido algunas variables dentro de su clasificación de "género" sobre 'Participación y acceso' y 'Vida pública y toma de decisiones'. 
+
+Se puede acceder a estas datas mediante los siguientes links: 
+FMI: https://www.imf.org/external/datamapper/GII_TC@GD/gbtier_1/gbtier_2/gb_othersource
+WB: https://databank.worldbank.org/source/world-development-indicators#
+
+Sin embargo, las tablas no están presentes en la web, pero sí es posible descargar la data en un formato de excel, que es lo que haré con cada variable de forma independiente. Así obtenemos lo siguiente:
+
+```{r}
+library(rio)
+```
+
+FMI
+1. Índice de desarrollo de género
+```{r}
+IDG= "https://github.com/MariaEmmaMacedov/ClasesEstadistica/raw/master/imf-dm-export-20190918%20-%20%C3%ADndice%20de%20desarrollo%20de%20g%C3%A9nero.xls"
+
+DesarrolloG = import(IDG)
+```
+
+2. Índice de desigualdad de género
+```{r}
+IDiG= "https://github.com/MariaEmmaMacedov/ClasesEstadistica/raw/master/imf-dm-export-20190919%20-%20%C3%ADndice%20de%20desigualdad%20de%20g%C3%A9nero.xls"
+
+DesigualdadG = import(IDiG)
+```
+
+--> De ambas datas solo se tomarán las variables del año más reciente. 
+
+
+WB
+--Participación y acceso
+
+1. Las mujeres no embarazadas y no enfermas pueden hacer el mismo trabajo que los hombres 
+(1 = sí; 0 = no)
+```{r}
+SJ= "https://github.com/MariaEmmaMacedov/ClasesEstadistica/raw/master/Data_Extract_From_World_Development_Indicators%20-%20%5BG%5D%20SameJob.xlsx"
+
+SameJob = import(SJ)
+```
+
+2. Proporción de tiempo dedicado al trabajo doméstico y de cuidado no remunerado, hombres 
+(% de 24 horas al día)
+```{r}
+DWm="https://github.com/MariaEmmaMacedov/ClasesEstadistica/raw/master/Data_Extract_From_World_Development_Indicators%20-%20%5BG%5D%20DomesticW.m.xlsx"
+
+DomWmen = import(DWm)
+```
+
+3. Proporción de tiempo dedicado al trabajo doméstico y de cuidado no remunerado, mujeres 
+(% de 24 horas al día)
+```{r}
+DWw="https://github.com/MariaEmmaMacedov/ClasesEstadistica/raw/master/Data_Extract_From_World_Development_Indicators%20-%20%5BG%5D%20DomesticW.w.xlsx"
+
+DomWwomen = import(DWw)
+```
+
+
+--Vida pública y toma de decisiones
+
+4. La ley exige igual remuneración para mujeres y hombres por un trabajo de igual valor
+(1 = sí; 0 = no)
+```{r}
+LawR= "https://github.com/MariaEmmaMacedov/ClasesEstadistica/raw/master/Data_Extract_From_World_Development_Indicators%20-%20%5BG%5D%20LawEqualRem.xlsx"
+
+LawEqualRem = import(LawR)
+```
+
+5. La ley exige la licencia de maternidad remunerada o no remunerada 
+(1 = sí; 0 = no)
+```{r}
+LawM="https://github.com/MariaEmmaMacedov/ClasesEstadistica/raw/master/Data_Extract_From_World_Development_Indicators%20-%20%5BG%5D%20LawMatern.xlsx"
+
+LawMat = import(LawM)
+```
+
+6. La ley exige la no discriminación basada en el género en la contratación 
+(1 = sí; 0 = no)
+```{r}
+LawND="https://github.com/MariaEmmaMacedov/ClasesEstadistica/raw/master/Data_Extract_From_World_Development_Indicators%20-%20%5BG%5D%20LawNoDisc.xlsx" 
+
+LawNoDisc = import(LawND)
+```
+
+7. La cláusula de no discriminación menciona el género en la constitución 
+(1 = sí; 0 = no)
+```{r}
+ConstND="https://github.com/MariaEmmaMacedov/ClasesEstadistica/raw/master/Data_Extract_From_World_Development_Indicators%20-%20%5BG%5D%20ConstNoDisc.xlsx" 
+
+ConstNoDisc = import(ConstND)
+```
+
+8. Mujeres que participan en las tres decisiones (atención médica propia, compras principales del hogar y visitas familiares)
+(% de mujeres de 15 a 49 años)
+```{r}
+TD="https://github.com/MariaEmmaMacedov/ClasesEstadistica/raw/master/Data_Extract_From_World_Development_Indicators%20-%20%5BG%5D%203Desc.xlsx" 
+
+ThreeDecs = import(TD)
+```
+
+--> Al bajar la data he seleccionado los últimos 6 años; pero como se puede observar al analizar la data no todos los años cuentan con valores completos. Por esta razón, solo se seleccionará aquellos años con una catidad significativa de datos (2017). Asimismo, hay variables que pese a ser interesantes no cuentan con una cantidad significativa de datos (como la n°8 del WB) así que se terminarán desestimando. 
+
+Por último, se procederá a constuir la variable <género> de la forma más conveniente (un índice, por ejemplo). La lógica detrás es evaluar si que exista un campo de juego más parejo en temas de género es significante para aumentar la productividad de las personas de un país. Del mismo modo, se puede rastrear el interés del Estado por equiparar esta cancha con las variables que implican si hay o no legislatura al respecto. 
