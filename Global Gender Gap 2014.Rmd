@@ -1,0 +1,60 @@
+
+```{r}
+library(htmltab)
+linkPage ="https://es.wikipedia.org/wiki/Global_Gender_Gap_Report" 
+linkPath = '//*[@id="mw-content-text"]/div/table'
+
+#Ahora traemos:
+GGG = htmltab(doc = linkPage, which =linkPath) 
+```
+
+```{r}
+head(GGG)
+tail(GGG)
+names(GGG)
+str(GGG)
+```
+
+```{r}
+# limpieza
+library(stringr)
+library(magrittr)
+names(GGG)=str_split(names(GGG),">>",simplify = T)[,1]%>%gsub('\\s','',.)
+```
+```{r}
+names(GGG)
+```
+```{r}
+names(GGG)[1] = "Pais"
+```
+```{r}
+names(GGG)
+```
+Quitamos:
+```{r}
+GGG = GGG[,-c(3,4,5,6,7,8,9,10)]
+```
+```{r}
+GGG = GGG[,-c(2)]
+```
+
+```{r}
+names(GGG) [2] = "Indice GGG"
+```
+
+```{r}
+GGG$`Indice GGG`= as.numeric(GGG$`Indice GGG`)
+```
+```{r}
+str(GGG)
+```
+```{r}
+GGG = na.omit(GGG)
+```
+
+
+
+
+
+
+
